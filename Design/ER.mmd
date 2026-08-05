@@ -1,0 +1,61 @@
+erDiagram
+    TRAIN {
+        string train_number PK "e.g., 12601"
+        string train_name "e.g., Mangalore Express"
+    }
+
+    TRIP {
+        uuid id PK
+        string trip_number "e.g., TRP-2026-8849"
+        string train_number FK
+        string direction "UP or DOWN"
+        string status "SCHEDULED, ACTIVE, COMPLETED"
+        datetime start_time
+    }
+
+    TRAIN_ROUTE_STATION {
+        uuid id PK
+        string train_number FK
+        string direction "UP or DOWN"
+        int sequence_order "1, 2, 3... (Ordered Path)"
+        string station_id "e.g., KPD, MAS, JTJ"
+        string station_name "e.g., Katpadi Junction"
+        string manager_phone "Station Manager Contact"
+    }
+
+    GATEWAY_DEVICE {
+        string device_id PK "e.g., RPI-GATEWAY-12601"
+        string train_number FK
+        string status "ONLINE, OFFLINE"
+    }
+
+    OBHS_STAFF {
+        uuid id PK
+        string trip_number FK "Links to active trip"
+        string coach_number "e.g., A1, B1, or ALL"
+        string name
+        string phone_number
+        boolean is_active
+    }
+
+    ALERT_LOG {
+        uuid id PK
+        string device_id FK
+        string train_number
+        string trip_number
+        string coach_number
+        string last_station_id
+        string next_station_id
+        string dispatched_to_type "OBHS_STAFF or STATION_MANAGER"
+        string recipient_phone
+        string sms_status "DELIVERED, FAILED"
+        datetime created_at
+    }
+
+    %% Relationships
+    TRAIN ||--o{ TRIP : "schedules"
+    TRAIN ||--o{ TRAIN_ROUTE_STATION : "has route stops"
+    TRAIN ||--|| GATEWAY_DEVICE : "equipped with 1 gateway"
+    TRIP ||--o{ OBHS_STAFF : "assigned to"
+    TRIP ||--o{ ALERT_LOG : "tracks"
+    GATEWAY_DEVICE ||--o{ ALERT_LOG : "dispatches"
