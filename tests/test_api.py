@@ -7,7 +7,7 @@ from fastapi.testclient import TestClient
 os.environ["API_SECRET_KEY"] = "secret-test-key-2026"
 os.environ["SUPABASE_URL"] = "https://mock.supabase.co"
 os.environ["SUPABASE_KEY"] = "mock-key"
-# We leave FAST2SMS_API_KEY unset to trigger mock mode in test runs
+# We leave TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILIO_FROM_NUMBER unset to trigger mock mode in test runs
 
 from api.main import app
 from api.database import get_supabase

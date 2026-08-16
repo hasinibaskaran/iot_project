@@ -70,7 +70,8 @@ def read_root():
     # Detect configuration statuses
     supabase_configured = "Configured" if os.environ.get("SUPABASE_URL") and os.environ.get("SUPABASE_KEY") else "Missing"
     api_key_configured = "Configured" if os.environ.get("API_SECRET_KEY") else "Missing"
-    sms_mode = "Production (Fast2SMS)" if os.environ.get("FAST2SMS_API_KEY") else "Mock Sandbox Mode"
+    twilio_configured = os.environ.get("TWILIO_ACCOUNT_SID") and os.environ.get("TWILIO_AUTH_TOKEN") and os.environ.get("TWILIO_FROM_NUMBER")
+    sms_mode = "Production (Twilio)" if twilio_configured else "Mock Sandbox Mode"
     
     return f"""
     <!DOCTYPE html>
